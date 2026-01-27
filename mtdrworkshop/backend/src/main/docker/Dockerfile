@@ -2,19 +2,21 @@
 ##
 ## Copyright (c) 2021 Oracle, Inc.
 ## Licensed under the Universal Permissive License v 1.0 as shown at https://oss.oracle.com/licenses/upl/
-FROM openjdk:11
-# In order to use the same application.yaml file both in the container
-# and in the IDE, we need to copy the wallet directory under /target/classes/wallet.
-# This way the JDBC URL can point to jdbc:oracle:thin:@xxx?TNS_ADMIN=target/classes/wallet-->
 
+# Stage 1: Build
+FROM maven:3.8-openjdk-11 AS builder
+WORKDIR /app
+COPY pom.xml .
+COPY src ./src
+RUN mvn package -DskipTests
 
+# Stage 2: Runtime
+FROM openjdk:11-jre-slim
+WORKDIR /app
 
-#Thinking we don't need to add the wallet here since we're using a kubernetes secret
-##ADD target/classes/wallet /target/classes/wallet
+# Copy dependencies and application jar from builder stage
+COPY --from=builder /app/target/libs ./libs
+COPY --from=builder /app/target/todolistapp-helidon-se.jar ./app.jar
 
-## add maven dependencies
-ADD target/libs /target/libs
-
-##adding the service itself
-ADD target/todolistapp-helidon-se.jar /target/todolistapp-helidon-se.jar
-ENTRYPOINT ["java", "-jar", "/target/todolistapp-helidon-se.jar"]
+EXPOSE 8080
+ENTRYPOINT ["java", "-jar", "app.jar"]
