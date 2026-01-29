@@ -47,3 +47,10 @@ frontend/package-lock.json
 frontend/npm-debug.log*
 frontend/yarn-debug.log*
 frontend/yarn-error.log*
+
+# OCI Credentials (never commit)
+mis-credenciales-oci.txt
+terraform.tfvars
+*.tfstate
+*.tfstate.backup
+.terraform/
