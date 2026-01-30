@@ -16,6 +16,8 @@
 // const API_LIST = 'http://localhost:8080/todolist';
 // Copy from the endpoint from the API Gateway Deployment
 // Example: const API_LIST = 'https://di2eyonlz5s7kmuektcddaw5zq.apigateway.<region>.oci.customer-oci.com/todolist';
-const API_LIST = 'https://di2eyonlz5s7kmuektcddaw5zq.apigateway.eu-frankfurt-1.oci.customer-oci.com/todolist';
+// Set this to your Compute instance public IP before building the Docker image
+// Example: const API_LIST = 'http://<YOUR_INSTANCE_PUBLIC_IP>:8080/todolist';
+const API_LIST = process.env.REACT_APP_API_URL || 'http://localhost:8080/todolist';
 
 export default API_LIST;

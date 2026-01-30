@@ -6,3 +6,7 @@ variable "ociCompartmentOcid" {}
 variable "ociRegionIdentifier" {}
 variable "mtdrDbName" {}
 variable "runName" {}
+variable "ssh_public_key" {
+  description = "SSH public key for compute instance access"
+  type        = string
+}
